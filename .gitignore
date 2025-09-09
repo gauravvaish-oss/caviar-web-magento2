@@ -1,0 +1,38 @@
+# Magento generated & cache
+/generated/
+var/cache/
+var/page_cache/
+var/view_preprocessed/
+pub/static/
+pub/media/tmp/
+
+# Logs & reports
+var/log/
+var/report/
+var/session/
+var/tmp/
+
+# Composer & vendor
+/vendor/
+composer.lock
+
+# Environment & config
+#/app/etc/env.php
+#/app/etc/config.php
+
+# IDE / OS junk
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+
+# PHPUnit / testing
+.phpunit.result.cache
+coverage/
+
+# Node / Frontend build
+/node_modules/
+/npm-debug.log
+/yarn-error.log
+/package-lock.json
+
