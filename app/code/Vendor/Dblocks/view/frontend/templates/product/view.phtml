@@ -1,0 +1,91 @@
+<?php
+/** @var \Vendor\Dblocks\Block\ProductView $block */
+$product = $block->getProduct();
+$countdownDate = $block->getCountdownDate();
+?>
+
+<?php if ($product): ?>
+    <div class="special-product-card" style="border:1px solid #eee; border-radius:10px; padding:20px; text-align:center; max-width:300px; margin:0 auto;">
+        
+        <h3 style="margin-bottom:10px;">Special Trend Products</h3>
+        <hr style="margin:10px 0;">
+        
+        <!-- Product Image -->
+        <?php if ($product): ?>
+            <img src="<?= $block->getImageUrl($product, 'product_base_image'); ?>"
+                alt="<?= $block->escapeHtml($product->getName()); ?>"
+                style="max-width:200px; margin:10px auto; display:block;">
+        <?php endif; ?>
+
+
+        <!-- Countdown Timer -->
+        <?php if ($countdownDate): ?>
+            <div id="countdown-<?= $product->getId(); ?>" style="display:flex; justify-content:center; gap:5px; margin:15px 0;">
+                <div style="background:#ff6600; color:#fff; padding:10px; border-radius:5px; text-align:center;">
+                    <span class="days">00</span><br><small>Days</small>
+                </div>
+                <div style="background:#ff6600; color:#fff; padding:10px; border-radius:5px; text-align:center;">
+                    <span class="hours">00</span><br><small>Hour</small>
+                </div>
+                <div style="background:#ff6600; color:#fff; padding:10px; border-radius:5px; text-align:center;">
+                    <span class="minutes">00</span><br><small>Min</small>
+                </div>
+                <div style="background:#ff6600; color:#fff; padding:10px; border-radius:5px; text-align:center;">
+                    <span class="seconds">00</span><br><small>Sec</small>
+                </div>
+            </div>
+
+            <script>
+            (function(){
+                var targetDate = new Date("<?= $countdownDate; ?>").getTime();
+                var countdown = document.getElementById("countdown-<?= $product->getId(); ?>");
+                var daysSpan = countdown.querySelector(".days");
+                var hoursSpan = countdown.querySelector(".hours");
+                var minutesSpan = countdown.querySelector(".minutes");
+                var secondsSpan = countdown.querySelector(".seconds");
+
+                function updateCountdown() {
+                    var now = new Date().getTime();
+                    var distance = targetDate - now;
+
+                    if (distance <= 0) {
+                        countdown.innerHTML = "Offer expired!";
+                        return;
+                    }
+
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    daysSpan.innerHTML = days;
+                    hoursSpan.innerHTML = hours;
+                    minutesSpan.innerHTML = minutes;
+                    secondsSpan.innerHTML = seconds;
+                }
+
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            })();
+            </script>
+        <?php endif; ?>
+
+        <!-- Ratings -->
+        <div style="color:#ffcc00; margin:10px 0;">
+            ★★★★★
+        </div>
+
+        <!-- Product Name -->
+        <h4 style="margin:10px 0;"><?= $block->escapeHtml($product->getName()); ?></h4>
+
+        <!-- Price -->
+        <p style="font-size:20px; font-weight:bold; color:#000;">
+            <?= $block->escapeHtml($product->getFinalPrice()); ?> 
+            <?php if ($product->getPrice() > $product->getFinalPrice()): ?>
+                <del style="color:#888; font-size:14px;"><?= $block->escapeHtml($product->getPrice()); ?></del>
+            <?php endif; ?>
+        </p>
+    </div>
+<?php else: ?>
+    <p>No product found.</p>
+<?php endif; ?>

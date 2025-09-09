@@ -1,0 +1,40 @@
+<div class="shopping-item" data-bind="scope: 'minicart_content'">
+    <!-- ko if: getCartParam('summary_count') -->
+    <div class="dropdown-cart-header">
+        <span data-bind="text: getCartParam('summary_count') + ' Items'"></span>
+        <a data-bind="attr: {href: shoppingCartUrl}">View Cart</a>
+    </div>
+
+    <ul class="shopping-list" data-bind="foreach: { data: getCartItems(), as: 'item' }">
+        <li>
+            <a href="javascript:void(0)" class="remove" title="Remove this item"
+               data-bind="click: function(){ $parent.removeItem(item.item_id) }">
+                <i class="lni lni-close"></i>
+            </a>
+            <div class="cart-img-head">
+                <a class="cart-img" data-bind="attr: { href: item.product_url }">
+                    <img data-bind="attr: { src: item.product_image.src, alt: item.product_name }" />
+                </a>
+            </div>
+            <div class="content">
+                <h4><a data-bind="attr: {href: item.product_url}, text: item.product_name"></a></h4>
+                <p class="quantity" data-bind="text: item.qty + 'x - $' + parseFloat(item.product_price_value).toFixed(2)"></p>
+            </div>
+        </li>
+    </ul>
+
+    <div class="bottom">
+        <div class="total">
+            <span>Total</span>
+            <span class="total-amount" data-bind="html: getCartParamUnsanitizedHtml('subtotal')"></span>
+        </div>
+        <div class="button">
+            <a class="btn animate" data-bind="attr: {href: checkoutUrl}">Checkout</a>
+        </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot: getCartParam('summary_count') -->
+        <p class="empty">You have no items in your shopping cart.</p>
+    <!-- /ko -->
+</div>

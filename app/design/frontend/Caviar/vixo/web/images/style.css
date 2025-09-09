@@ -1,0 +1,166 @@
+.topbar{background: #FF9000;color: #fff;}
+.navbar-nav .nav-link{font-size: 13px;font-weight: 500;font-family: "Poppins", sans-serif;color: #000;text-transform: capitalize;}
+.navbar-expand-lg .navbar-nav{gap: 12px;}
+.flex_icon{display: flex;list-style: none;gap: 15px;}
+.flex_icon li a img{width: 17px;height: 17px;object-fit: contain;}
+#toggle_section{display: block;}
+.category_menu{border: 1px solid #E4E4E4;border-radius: 5px;overflow: hidden;}
+.top_category{background: #FA6905;color: #fff;padding: 10px;border: 0px;width: -webkit-fill-available;text-align: left;font-size: 16px;font-weight: 400;font-family: "Poppins", sans-serif;text-transform: uppercase;}
+.top_category img{width: 16px;height: 16px;object-fit: contain;margin-right:40px;}
+.nav-pills #toggle_section .nav-link{ font-size: 12px;font-weight: 600;font-family: "Montserrat", sans-serif;text-transform: uppercase;color: #000;background: transparent;padding: 23px 20px;padding-left: 10px;width: -webkit-fill-available;text-align: left;}
+.nav-pills #toggle_section .nav-link img{width: 24px;height: 24px;object-fit: contain;margin-right:40px;}   
+.nav-pills #toggle_section .nav-link.active{color: #FA6905;position: relative;}
+.nav-pills #toggle_section .nav-link.active::after{content: "";position: absolute;bottom: 0;top: 0;margin: auto;right: 0;width: 100%;height: 2px;background: url("https://dev.technians.com/shared/caviar/images/right_vector.png");background-position: right center;background-size: contain;height: 12px;width: 15px;background-repeat: no-repeat;}
+.ad_bg.bg_1{background: url("https://dev.technians.com/shared/caviar/images/bg_1.png");background-size: cover;background-repeat: no-repeat;text-align: center;padding: 15px;padding-bottom: 0px;}
+.ad_bg.bg_2{background: url("https://dev.technians.com/shared/caviar/images/bg_2.png");background-size: cover;background-repeat: no-repeat;text-align: center;padding: 15px;padding-bottom: 0px;margin-top: 15px;}
+.ad_bg span{color: #7E7E7E;font-size: 12px;font-weight: 400;font-family: "Poppins", sans-serif;text-transform: capitalize;}
+.ad_bg h4{color: #000;font-size: 15px;font-weight: 700;font-family: "Montserrat", sans-serif;text-transform: capitalize;}
+.ad_bg img{width: 150px;}
+/* .tab-content, #v-pills-new_product, .product_slider{height: 100%;} */
+/* .product_slider .swiper-wrapper, .product_slider .swiper-slide{height: unset;} */
+.product_slider .swiper-slide img{height: 100%;}
+.product_slider .swiper-pagination-bullet{height: 13px;width: 13px;background: #fff;border-radius: 50%;opacity: 1;}
+.product_slider .swiper-pagination-bullet-active{background: #FA6905;}
+.spacial_trend{border: 1px solid #E4E4E4;padding: 15px;}
+.spacial_trend h5{font-size: 13px;font-weight: 600;font-family: "Montserrat", sans-serif;border-bottom: 1px solid #E4E4E4;text-align: center;text-transform: capitalize;padding: 0px 15px 15px 15px;width: max-content;margin: auto;}
+.time_countdown{font-family: "Poppins", sans-serif;text-align: center;width: fit-content;}
+.time_countdown div{background: #FA6905;height: 50px;width: 50px;border-radius: 5px;display: flex;align-items: center;justify-content: center;color: #fff;font-size: 13px;}
+.time_countdown span{font-size: 11px;color: #7E7E7E;font-weight: 400;}
+.time_countdown_section{display: flex;gap: 10px;justify-content: space-between;}
+
+
+
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse { justify-content: center;}
+}
+
+
+ .trending-section {padding-top: 30px;}
+.section-header {display: flex;justify-content: space-between;align-items: center;margin-bottom: 30px; }
+.section-title {font-size: 24px;font-weight: 600;color: #333; margin: 0; }
+.tab-buttons {display: flex;gap: 10px;}
+.tab-btn { background: #f8f9fa;border: 1px solid #e9ecef; color: #666; padding: 8px 16px; border-radius: 5px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+ .tab-btn.active { background: #ff6b35; color: white;border-color: #ff6b35; }
+ .tab-btn:hover { background: #ff6b35; color: white; border-color: #ff6b35;  }
+ .product-grid { margin-top: 20px; }
+ .product-card { background: white;border-radius: 5px; overflow: hidden; border: 1px solid #E4E4E4; /* box-shadow: 0 2px 10px rgba(0,0,0,0.1); */ /* transition: all 0.3s ease; */ margin-bottom: 20px;  position: relative; }
+.product-card:hover{box-shadow: 0px 4px 37px 0px #0000001A;}
+ .product-card .product-image .product-img{ padding: 10px; }
+        /* .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        } */
+.product-image { position: relative; width: 100%; height: 250px; overflow: hidden; display: flex; justify-content: center;  }
+.product-image img { /* width: 80%; height: 100%; */ width: auto; height: 200px; object-fit: cover;}
+.discount-badge { position: absolute; top: 5px; left: 5px; background: #ff6b35;  color: white; padding: 2px 7px; font-size: 10px;  font-weight: 600; }
+ .product-actions { position: absolute;top: 92%;left: 50%; transform: translate(-50%, -50%); display: flex; gap: 5px; opacity: 0; transition: all 0.3s ease; }
+ .product-actions img{width: 20px;height: auto;object-fit: cover;}
+
+        /* .product-card .product-actions:hover img{
+            filter: invert(1);
+        } */ .product-actions img.shuffle{ filter: invert(1); } .product-card:hover .product-actions { opacity: 1;  }
+ .action-btn { width: 40px; height: 30px; background: white; border: none; border-radius: 5px; display: flex; align-items: center; justify-content: center; border: 1px solid #E4E4E4; /* box-shadow: 0 2px 10px rgba(0,0,0,0.2); */ cursor: pointer; transition: all 0.3s ease; }
+ .action-btn:hover {background-color: #ff6b35; /* filter: invert(1); */ color: white;   }
+ .product-info { padding: 15px; display:flex;  flex-direction: column;  align-items: center; justify-content: center; }
+ .product-rating { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+ .stars { color: #ffc107; font-size: 10px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.stars p.star-qty{     font-size: 12px;  margin-bottom: 0;  padding-left: 5px; color: #7E7E7E; }
+        .product-title { font-size: 12px; font-weight: 600; color: #000; text-transform: uppercase; font-family: "Montserrat" !important;text-align: center; }
+.product-price {display: flex;align-items: center; gap: 8px;}
+.current-price { font-size: 16px; font-weight: 600; color: #FA6905; font-family: "Montserrat" !important; }
+ .original-price { font-size: 14px; font-weight: 400; color: #7E7E7E; text-decoration: line-through; }
+.trending-product { display: none;}
+ .trending-product.active {display: block; }
+
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+        }
+
+        /*  Product category */
+.main-title h2, .main-title h3, .main-title h1{font-family: "Montserrat" !important;font-weight: 600;font-size: 28px;line-height: 35px; ;text-transform: capitalize; margin-bottom: 15px;}
+.product_category .nav-pills #toggle_section .nav-link{padding: 21px 10px !important;}
+.product_category .nav-pills #toggle_section .nav-link.active::after{content: unset;}
+.product_category .nav-pills{padding: 10px;}
+ .Product_category .main-title{display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;}
+.swiper-nav {display: flex;gap: 8px}
+.swiper-button-prev,
+.swiper-button-next {position: static !important;width: 25px !important;height: 25px !important; background: #ff6b35;border-radius: 3px;  display: flex;  justify-content: center;  align-items: center;}
+.swiper-button-prev{background-color: #fff; border:1px solid #E4E4E4; border-radius: 3px; margin-right: 8px;}
+.swiper-button-prev::after{color: #000 !important; font-size: 8px !important; }
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 8px !important;
+  color: #fff;
+  font-weight: 600 !important;
+}
+.Product_category .nav-pills #toggle_section .nav-link img{margin-right: 20px !important;}
+section.banner-section{padding-top: 50px; padding-bottom: 50px;}
+.banner-section {position: relative;border-radius: 8px;overflow: hidden}
+.banner-img {width: 100%; height: 300px;  object-fit: cover;  filter: brightness(70%);  border-radius: 5px}
+
+.banner-content {position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; display: flex; align-items: center; justify-content: center;  flex-direction: column}
+.banner-subtitle {font-family: "Poppins" !important;  font-size: 14px;  text-transform: uppercase;  margin-bottom: 10px;  letter-spacing: 2px;}
+.banner-title {font-family: "Montserrat" !important; font-size: 32px; font-weight: 700;}
+.banner-desc { font-size: 14px;   font-family: "Poppins" !important}
+.banner-btn { background-color: #FA6905;   font-family: "Poppins" !important;  border: none;  color: #fff !important;  font-weight: bold;  padding: 8px 15px;  border-radius: 5px;  font-size: 14px;}
+.banner-btn:hover{background-color: #FA6905;}
+
+.offer-card {position: relative;  background: #fff;  border-radius: 3px;  padding: 10px 10px 140px;  height: 190px;  overflow: hidden;  border: 1px solid #E4E4E4;  margin-bottom: 20px;  background-image: url(./images/bg_2.png);  background-position: top;  background-repeat: no-repeat;  background-size: 100%;}
+
+.offer-title { margin-bottom: 5px;  font-family: "Montserrat" !important;font-weight: 700; font-size: 20px;  text-align: center;text-transform: capitalize;}
+
+.offer-price { color: #7E7E7E;  margin-bottom: 10px;  position: relative;  font-family: "Poppins" !important;font-weight: 600; font-size: 12px; line-height: 16px; text-transform: uppercase;}
+
+.offer-price::after {  content: "";  display: block;  width: 40px;  height: 1px;  background: #000;  margin: 2px auto 0;}
+
+.offer-product {  position: absolute;  bottom: 10px;  top: 70px;  left: 0;  right: 0;  margin: auto;  max-height: 120px;   z-index: 2;}
+
+
+
+
+
+
+/* --------------------------------------------- */
+ .footer{padding-bottom: 30px;}
+            .footer ul{list-style: none;padding: 0;font-family: "Poppins", sans-serif;font-weight: 400;}
+            .footer ul li img{width: 10px;margin-right: 10px;margin-top: 5px;}
+            .footer ul li a{text-decoration: none;color: #000;font-family: "Poppins", sans-serif;}
+            .footer ul li, .footer p{font-size: 11px; margin-bottom: 7px;display: flex;align-items: flex-start;font-family: "Poppins", sans-serif;text-transform: capitalize;}
+            .footer h4{font-family: "Montserrat" !important;font-size: 13px;font-weight: 600;color: #000;text-transform: uppercase;margin-bottom: 20px;}
+            .footer p span{background-color: #FA6905;color: #fff;text-transform: capitalize;padding: 3px 6px;border-radius: 3px;font-size: 8px;margin-bottom: 0px;margin-left: 10px;line-height: 10px;}
+            .footer form{position: relative;border-radius: 5px; overflow: hidden;}
+            .footer form input{border: 1px solid #E4E4E4;font-size: 10px;font-weight: 400;font-family: poppins;padding: 10px 15px;border-radius: 5px;width: -webkit-fill-available;}
+            .footer form button{position: absolute;right: 0;top: 0;bottom: 0;border: none;background: #FA6905;padding: 7px 12px;}
+            .footer .update_text{color: #000000;font-family: "Poppins", sans-serif;font-size: 9px;margin-top: 10px;line-height: 16px;}
+            .copyright{background-color: #FA6905;padding: 8px;}
+            .copyright ul{display: flex;list-style: none; justify-content: end; margin-bottom: 0px;}
+            .copyright ul li{background-color: #fff;padding: 2px;border-radius: 2px;margin-right: 3px;display: flex;align-items: center;justify-content: center;}
+            .copyright ul li img{width: 25px;}
+            .copyright p{color: #fff;font-family: "Poppins", sans-serif;font-size: 11px;font-weight: 400;margin-bottom: 0px;letter-spacing: 0.5px;text-transform: capitalize;}
+            .logo_slider .slider_bg{background-color: #fff;padding: 17px 25px;border: 1px solid #F0F0F0;text-align: center;border-radius: 3px;}
+            .logo_slider .slider_bg img{width: 80px;}
+            section{padding: 50px 0;}
+            .blog_slider .blog_section_bg{background-color: #fff;border: 1px solid #E4E4E4;border-radius: 5px;overflow: hidden;}
+            .blog_slider .blog_section_bg h6{font-family: "Montserrat", sans-serif; font-size: 12px;font-weight: 600;text-transform: capitalize;margin-bottom: 0px;padding: 15px 10px;text-align: center;}
+            .shop_by_category .category_section_bg{border: 1px solid #E4E4E4;border-radius: 5px;overflow: hidden;}
+            .shop_by_category .category_section_bg ul{list-style: none;margin-bottom: 0px; padding: 12px;column-count: 2;}
+            .shop_by_category .category_section_bg ul li h6{font-weight: 600;font-size: 11px;text-transform: capitalize;font-family: "Montserrat", sans-serif;margin-bottom: 10px;}
+            .shop_by_category .category_section_bg a{background-color: #FA6905;border-radius: 5px;padding: 5px 10px;display: inline-block;color: #fff;text-decoration: none;font-family: "Poppins", sans-serif;font-size: 11px;text-transform: uppercase;}
+            .swiper-button-lock {display: flex;}
+            .top_product_slider .top_product_section_bg h5{font-family: "Montserrat", sans-serif; font-size: 15px;font-weight: 600;text-transform: capitalize;margin-bottom: 0px;padding: 15px 10px 5px; }
+            .top_product_slider .top_product_section_bg{border: 1px solid #E4E4E4;border-radius: 5px;overflow: hidden;position: relative;transition: all 0.5s;}
+            .top_product_slider .top_product_section_bg div{padding: 0px 10px 15px;}
+            .top_product_slider .top_product_section_bg div span{color: #7E7E7E;font-size: 11px;font-weight: 400;font-family: "Poppins", sans-serif;}
+            .top_product_slider .top_product_section_bg div img{width: 28px;}
+            .top_product_slider .top_product_section_bg:hover{background-color: #FA6905;}
+            .top_product_slider .top_product_section_bg:hover h5, .top_product_slider .top_product_section_bg:hover span{color: #fff;}
+            .top_product_slider .top_product_section_bg:hover div img{filter: brightness(0) invert(1);}

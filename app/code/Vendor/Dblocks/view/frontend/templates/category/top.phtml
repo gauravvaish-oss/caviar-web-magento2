@@ -1,0 +1,77 @@
+<?php $categories = $block->getCategories(); ?>
+
+<div class="top-category-block">
+    <div class="top-category-header">
+        <span class="menu-icon">☰</span>
+        <span class="title">TOP CATEGORY</span>
+    </div>
+    <ul class="top-category-list">
+        <?php foreach ($categories as $category): ?>
+            <li class="has-children">
+                <a href="<?= $category->getUrl(); ?>">
+                    <?= $block->escapeHtml($category->getName()); ?>
+                </a>
+
+                <?php $children = $block->getChildren($category); ?>
+                <?php if ($children && count($children)): ?>
+                    <ul class="subcategory-list">
+                        <?php foreach ($children as $child): ?>
+                            <li>
+                                <a href="<?= $child->getUrl(); ?>">
+                                    <?= $block->escapeHtml($child->getName()); ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+
+        <li class="see-all">
+            <a href="<?= $block->getStoreUrl('catalog/category/view', ['id' => $block->getRootCategoryId()]); ?>">
+                SEE ALL CATEGORY
+            </a>
+        </li>
+    </ul>
+</div>
+
+<style>
+.top-category-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.top-category-list > li {
+    position: relative;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    width: auto;
+}
+.top-category-list > li > a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+.subcategory-list {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    min-width: 200px;
+    list-style: none;
+    padding: 10px;
+    z-index: 999;
+}
+.subcategory-list li {
+    padding: 5px 10px;
+}
+.subcategory-list li a {
+    text-decoration: none;
+    color: #555;
+}
+.top-category-list li:hover > .subcategory-list {
+    display: block;
+}
+</style>
