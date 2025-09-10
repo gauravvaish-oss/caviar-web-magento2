@@ -1,0 +1,186 @@
+<div class="trending-section">
+    <div class="main-title section-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 class="section-title">Trending Products</h2>
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="new">NEW PRODUCT</button>
+            <button class="tab-btn" data-tab="featured">FEATURED PRODUCT</button>
+            <button class="tab-btn" data-tab="bestseller">BEST SELLER</button>
+        </div>
+    </div>
+
+    <!-- New Products -->
+    <div class="tab-content trending-product active" id="new-products">
+        <div class="row">
+            <?php foreach ($block->getNewProducts() as $_product): ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <?php $image = $block->getImage($_product); ?>
+                            <a href="<?= $_product->getProductUrl() ?>">
+                                <img class="product-img"
+                                     src="<?= $image->getImageUrl(); ?>"
+                                     alt="<?= $block->escapeHtml($_product->getName()); ?>" />
+                            </a>
+                            <span class="discount-badge">NEW</span>
+                            <div class="product-actions">
+    <button class="action-btn" title="Quick View">
+        <img src="<?= $block->getViewFileUrl('images/eye.png'); ?>" alt="Quick View">
+    </button>
+    <button class="action-btn" title="Add to Wishlist">
+        <img src="<?= $block->getViewFileUrl('images/heart.png'); ?>" alt="Add to Wishlist">
+    </button>
+    <button class="action-btn" title="Compare">
+        <img class="shuffle" src="<?= $block->getViewFileUrl('images/shuffle.png'); ?>" alt="Compare">
+    </button>
+    <button class="action-btn" title="Add to Cart">
+        <img src="<?= $block->getViewFileUrl('images/cart.png'); ?>" alt="Add to Cart">
+    </button>
+</div>
+
+                        </div>
+
+                        <div class="product-info">
+                            <!-- Rating -->
+                            <?= $block->getReviewsSummaryHtml($_product, 'short') ?>
+
+                            <!-- Title -->
+                            <h5 class="product-title"><?= $block->escapeHtml($_product->getName()); ?></h5>
+
+                            <!-- Price -->
+                            <div class="product-price">
+                                <?= $block->getProductPriceHtml($_product) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- Featured Products -->
+    <div class="tab-content trending-product" id="featured-products">
+        <div class="row">
+            <?php foreach ($block->getFeaturedProducts() as $_product): ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                    <div class="product-card">
+                        <?php $image = $block->getImage($_product); ?>
+                        <a href="<?= $_product->getProductUrl() ?>">
+                            <img class="product-img"
+                                 src="<?= $image->getImageUrl(); ?>"
+                                 alt="<?= $block->escapeHtml($_product->getName()); ?>" />
+                        </a>
+                        <span class="discount-badge">HOT</span>
+                        <div class="product-actions">
+    <button class="action-btn" title="Quick View">
+        <img src="<?= $block->getViewFileUrl('images/eye.png'); ?>" alt="Quick View">
+    </button>
+    <button class="action-btn" title="Add to Wishlist">
+        <img src="<?= $block->getViewFileUrl('images/heart.png'); ?>" alt="Add to Wishlist">
+    </button>
+    <button class="action-btn" title="Compare">
+        <img class="shuffle" src="<?= $block->getViewFileUrl('images/shuffle.png'); ?>" alt="Compare">
+    </button>
+    <button class="action-btn" title="Add to Cart">
+        <img src="<?= $block->getViewFileUrl('images/cart.png'); ?>" alt="Add to Cart">
+    </button>
+</div>
+
+                        <?= $block->getReviewsSummaryHtml($_product, 'short') ?>
+                        <h5 class="product-title"><?= $block->escapeHtml($_product->getName()); ?></h5>
+                        <div class="product-price"><?= $block->getProductPriceHtml($_product) ?></div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- Best Seller Products -->
+    <div class="tab-content trending-product" id="bestseller-products">
+        <div class="row">
+            <?php foreach ($block->getBestSellerProducts() as $_product): ?>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                    <div class="product-card">
+                        <?php $image = $block->getImage($_product); ?>
+                        <a href="<?= $_product->getProductUrl() ?>">
+                            <img class="product-img"
+                                 src="<?= $image->getImageUrl(); ?>"
+                                 alt="<?= $block->escapeHtml($_product->getName()); ?>" />
+                        </a>
+                        <span class="discount-badge">TOP</span>
+                        <div class="product-actions">
+    <button class="action-btn" title="Quick View">
+        <img src="<?= $block->getViewFileUrl('images/eye.png'); ?>" alt="Quick View">
+    </button>
+    <button class="action-btn" title="Add to Wishlist">
+        <img src="<?= $block->getViewFileUrl('images/heart.png'); ?>" alt="Add to Wishlist">
+    </button>
+    <button class="action-btn" title="Compare">
+        <img class="shuffle" src="<?= $block->getViewFileUrl('images/shuffle.png'); ?>" alt="Compare">
+    </button>
+    <button class="action-btn" title="Add to Cart">
+        <img src="<?= $block->getViewFileUrl('images/cart.png'); ?>" alt="Add to Cart">
+    </button>
+</div>
+
+                        <?= $block->getReviewsSummaryHtml($_product, 'short') ?>
+                        <h5 class="product-title"><?= $block->escapeHtml($_product->getName()); ?></h5>
+                        <div class="product-price"><?= $block->getProductPriceHtml($_product) ?></div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<script>
+
+require(['jquery'], function($) {
+    'use strict';
+    $(function() {
+        // Optional explicit mapping if you ever change names:
+        var map = {
+            'new': 'new-products',
+            'featured': 'featured-products',
+            'bestseller': 'bestseller-products'
+        };
+
+        // Delegate to handle dynamic content or later DOM changes
+        $(document).on('click', '.tab-btn', function(e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var key = $btn.data('tab') || $btn.data('target');
+
+            // Resolve target id (use map first, then fallback to key + '-products')
+            var targetId = map[key] || (key ? (key + '-products') : null);
+
+            // Debugging helpers (will show in console)
+            if (!key) {
+                console.warn('tab-btn clicked but no data-tab/data-target found on element:', $btn);
+            }
+            if (!targetId) {
+                console.warn('Could not resolve targetId for tab:', key);
+            }
+
+            // Ensure we found a target element
+            var $target = targetId ? $('#' + targetId) : $();
+
+            if ($target.length === 0) {
+                console.warn('Trending tab target not found in DOM:', targetId, 'Check that id exists and is unique.');
+                // still toggle active state on buttons so UI responds
+                $('.tab-btn').removeClass('active');
+                $btn.addClass('active');
+                return;
+            }
+
+            // Remove active state from tabs and sections
+            $('.tab-btn').removeClass('active');
+            $('.trending-product').removeClass('active');
+
+            // Add active on clicked tab and its target
+            $btn.addClass('active');
+            $target.addClass('active');
+        });
+    });
+});
+
+
+    </script>

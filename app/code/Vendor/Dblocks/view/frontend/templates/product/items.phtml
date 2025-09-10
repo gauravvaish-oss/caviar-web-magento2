@@ -1,0 +1,23 @@
+<?php $products = $block->getData('collection'); ?>
+<?php if ($products->getSize()): ?>
+    <div class="row">
+        <?php foreach ($products as $_product): ?>
+            <div class="col-lg-4 col-md-6">
+                <div class="product-card">
+                    <?php $image = $block->getImage($_product); ?>
+                    <a href="<?= $_product->getProductUrl() ?>">
+                        <img class="product-img"
+                             src="<?= $image->getImageUrl(); ?>"
+                             alt="<?= $block->escapeHtml($_product->getName()); ?>" />
+                    </a>
+                    <span class="discount-badge">NEW</span>
+                    <?= $block->getReviewsSummaryHtml($_product, 'short') ?>
+                    <h5 class="product-title"><?= $block->escapeHtml($_product->getName()); ?></h5>
+                    <div class="product-price"><?= $block->getProductPriceHtml($_product) ?></div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>No products found.</p>
+<?php endif; ?>

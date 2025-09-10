@@ -359,9 +359,6 @@ return [
         'Swissup_Testimonials' => 0,
         'Temando_ShippingRemover' => 1,
         'Vendor_CustomMinicart' => 1,
-        'Vendor_Dblocks' => 1,
-        'Ves_All' => 0,
-        'Ves_Setup' => 0,
-        'Ves_Testimonial' => 0
+        'Vendor_Dblocks' => 1
     ]
 ];
