@@ -3,77 +3,22 @@
 $products = $block->getLatestProducts();
 ?>
 
-<div class="latest-products-block">
-    <h3 class="title">Latest Products</h3>
-    <ul class="latest-products-list">
-        <?php foreach ($products as $product): ?>
-            <li>
-                <a href="<?= $product->getProductUrl(); ?>">
-                    <img src="<?= $block->getImageUrl($product, 'product_small_image'); ?>"
-                         alt="<?= $block->escapeHtml($product->getName()); ?>"/>
-                    <div class="product-info">
-                        <span class="name"><?= $block->escapeHtml($product->getName()); ?></span>
-                        <div class="rating">★★★★★</div> <!-- placeholder, can integrate real reviews -->
-                        <span class="price">
-                            <?= $block->escapeHtml(
-                                $block->getLayout()
-                                    ->createBlock(\Magento\Framework\Pricing\Render::class)
-                                    ->setData('price_render', 'product.price.render.default')
-                                    ->render(\Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE, $product)
-                            ); ?>
-                        </span>
-                    </div>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+<div class="best_seller">
+    <div class="main-title">
+        <h4>Latest product</h4>
+    </div>
+    <?php foreach ($products as $product): ?>
+        <div class="product_detail">
+            <a href="<?= $product->getProductUrl(); ?>">
+                <img src="<?= $block->getImageUrl($product, 'product_small_image'); ?>"
+                     alt="<?= $block->escapeHtml($product->getName()); ?>"
+                     class="img-fluid product_img">
+                <h6><?= $block->escapeHtml($product->getName()); ?></h6>
+                <img src="<?= $block->getViewFileUrl('images/stars.png'); ?>" alt="rating" class="img-fluid">
+                <p>
+                    <?= $block->formatPrice($product->getFinalPrice()); ?>
+                </p>
+            </a>
+        </div>
+    <?php endforeach; ?>
 </div>
-
-<style>
-.latest-products-block {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: #fff;
-    padding: 15px;
-    max-width: 300px;
-}
-.latest-products-block .title {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-}
-.latest-products-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.latest-products-list li {
-    text-align: center;
-    padding: 15px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-.latest-products-list li:last-child {
-    border-bottom: none;
-}
-.latest-products-list img {
-    max-width: 120px;
-    margin: 0 auto 10px;
-    display: block;
-}
-.latest-products-list .product-info .name {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-.latest-products-list .rating {
-    color: #ff9800;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-.latest-products-list .price {
-    font-weight: bold;
-    color: #000;
-}
-</style>

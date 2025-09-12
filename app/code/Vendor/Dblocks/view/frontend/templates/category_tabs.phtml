@@ -1,0 +1,358 @@
+<?php
+$childCategories = $block->getChildCategories();
+?>
+
+<div class="col-md-12 Product_category">
+    <div class="row">
+        <div class="main-title product_category_dynamic_block">
+            <h2>Product Category</h2>
+            <div class="swiper-nav">
+                <div class="swiper-button-prev custom-prev"></div>
+                <div class="swiper-button-next custom-next"></div>
+            </div>
+        </div>
+
+        <!-- Left: Category Tabs -->
+        <div class="col-md-4">
+            <div class="category_menu product_category">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div id="toggle_section">
+                        <?php foreach ($childCategories as $index => $childCat): 
+                            $active = ($index == 0) ? 'active' : '';
+                        ?>
+                            <button class="nav-link <?= $active ?>" 
+                                data-bs-toggle="pill"
+                                data-bs-target="#v-pills-cat-<?= $childCat->getId() ?>" 
+                                data-category-id="<?= $childCat->getId() ?>"
+                                type="button" role="tab" 
+                                aria-selected="<?= $active ? 'true' : 'false' ?>">
+                                <?= $childCat->getName() ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Product Swipers -->
+        <div class="col-md-8" style="overflow:hidden">
+            <div class="tab-content" id="v-pills-tabContent">
+                <?php 
+                $i = 0;
+                
+                foreach ($childCategories as $index => $childCat): 
+                    $active = ($i === 0) ? 'active show' : '';
+                ?>
+                    <div class="tab-pane fade <?= $active ?>" id="v-pills-cat-<?= $childCat->getId() ?>" role="tabpanel">
+                        <div class="swiper productSwiper">
+                            <div class="swiper-wrapper">
+                                
+                            </div>
+                        </div>
+                    </div>
+                <?php 
+              $i++;
+              endforeach; ?>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script type="text/javascript">
+
+require(['jquery'], function ($) {
+
+    var swipers = {};
+
+    function initSwiper($tabPane) {
+        var tabId = $tabPane.attr('id');
+        if (!swipers[tabId]) {
+            swipers[tabId] = new Swiper($tabPane.find('.productSwiper')[0], {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                    576: { slidesPerView: 2 },
+                    768: { slidesPerView: 4 },
+                    992: { slidesPerView: 2 },
+                },
+            });
+        } else {
+            swipers[tabId].update();
+        }
+    }
+
+    function loadCategoryProducts(categoryId, $tabPane) {
+        if (!$tabPane.find('.swiper-wrapper').html().trim()) {
+            $.ajax({
+                url: '<?= $block->getProductsAjaxUrl() ?>',
+                type: 'GET',
+                dataType: 'json',
+                data: { category_id: categoryId, limit: 8 },
+                success: function(response) {
+                    var html = '';
+                    response.forEach(function(product) {
+                      console.log(product);
+                        html += '<div class="swiper-slide col-md-3">';
+                        html += '<div class="product-card">';
+                        html += '<div class="product-image">';
+                        html += '<img class="product-img" src="'+product.image+'" alt="'+product.name+'">';
+                        html += '<div class="product-actions">';
+                        html += '<button class="action-btn" title="Quick View"><img src="<?= $block->getViewFileUrl('images/eye.png'); ?>" /></button>';
+                        html += '<button class="action-btn" title="Wishlist"><img src="<?= $block->getViewFileUrl('images/heart.png') ?>" /></button>';
+                        html += '<button class="action-btn" title="Compare"><img src="<?= $block->getViewFileUrl('images/shuffle.png') ?>" /></button>';
+                        html += '<button class="action-btn" title="Add to Cart"><img src="<?= $block->getViewFileUrl('images/cart.png') ?>" /></button>';
+                        html += '</div></div>';
+                        html += '<div class="product-info">';
+                        html += '<h5 class="product-title">'+product.name+'</h5>';
+                        html += '<div class="product-price"><span class="current-price">₹'+product.price+'</span>';
+                        if(product.special_price) {
+                            html += '<span class="original-price">₹'+product.special_price+'</span>';
+                        }
+                        html += '</div></div></div></div>';
+                    });
+                    $tabPane.find('.swiper-wrapper').html(html);
+                    initSwiper($tabPane);
+                }
+            });
+        } else {
+            initSwiper($tabPane);
+        }
+    }
+
+    $(document).ready(function () {
+        // Initialize first category on page load
+        var $firstTab = $('#toggle_section .nav-link').first();
+        var firstCategoryId = $firstTab.data('category-id');
+        var $firstTabPane = $($firstTab.data('bs-target'));
+
+        // Add active/show for first tab and pane
+        $firstTab.addClass('active').attr('aria-selected', 'true');
+        $firstTabPane.addClass('active show');
+
+        // Load products and init swiper
+        loadCategoryProducts(firstCategoryId, $firstTabPane);
+
+        // Handle tab click
+        $('#toggle_section .nav-link').on('click', function() {
+            var $button = $(this);
+            var categoryId = $button.data('category-id');
+            var $tabPane = $($button.data('bs-target'));
+
+            // Toggle active/show classes
+            $('#toggle_section .nav-link').removeClass('active').attr('aria-selected', 'false');
+            $('.tab-pane').removeClass('active show');
+
+            $button.addClass('active').attr('aria-selected', 'true');
+            $tabPane.addClass('active show');
+
+            // Load products for clicked tab and init swiper
+            loadCategoryProducts(categoryId, $tabPane);
+        });
+    });
+});
+
+
+</script>
+
+<style>
+  /* ========== Category Menu ========== */
+  .product_category_dynamic_block{
+    padding: 5px;
+  }
+.category_menu {
+  border: 1px solid #E4E4E4;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.top_category {
+  background: #FA6905;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+}
+.top_category img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  margin-right: 40px;
+}
+.nav-pills #toggle_section .nav-link {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  color: #000;
+  background: transparent;
+  padding: 21px 10px;
+  width: 100%;
+  text-align: left;
+}
+.nav-pills #toggle_section .nav-link img {
+  width: 24px;
+  height: 24px;
+  margin-right: 20px;
+}
+.nav-pills #toggle_section .nav-link.active {
+  color: #FA6905;
+}
+
+/* ========== Swiper Slider ========== */
+/* .swiper-slide.col-md-3 {
+  width: 300px !important;
+} */
+.product_slider .swiper-slide img {
+  height: 100%;
+}
+.product_slider .swiper-pagination-bullet {
+  height: 13px;
+  width: 13px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 1;
+}
+.product_slider .swiper-pagination-bullet-active {
+  background: #FA6905;
+}
+.swiper-nav {
+  display: flex;
+  float: right;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: static !important;
+  width: 25px !important;
+  height: 25px !important;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-button-prev {
+  background: #fff;
+  border: 1px solid #E4E4E4;
+  margin-right: 8px;
+}
+.swiper-button-next {
+  background: #ff6b35;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 8px !important;
+  font-weight: 600 !important;
+}
+.swiper-button-prev::after {
+  color: #000 !important;
+}
+.swiper-button-next::after {
+  color: #fff !important;
+}
+
+/* ========== Product Cards ========== */
+.product-card {
+  background: #fff;
+  border: 1px solid #E4E4E4;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s ease;
+}
+.product-card:hover {
+  box-shadow: 0px 4px 37px 0px #0000001A;
+}
+.product-image {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.product-image img {
+  height: 200px;
+  object-fit: cover;
+}
+.discount-badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: #ff6b35;
+  color: white;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.product-actions {
+  position: absolute;
+  top: 92%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 5px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.product-card:hover .product-actions {
+  opacity: 1;
+}
+.action-btn {
+  width: 40px;
+  height: 30px;
+  background: white;
+  border: 1px solid #E4E4E4;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.action-btn img {
+  width: 17px;
+  height: auto;
+  object-fit: cover;
+}
+.action-btn:hover {
+  background-color: #ff6b35;
+  color: white;
+}
+.product-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+}
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.current-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #FA6905;
+}
+.original-price {
+  font-size: 14px;
+  color: #7E7E7E;
+  text-decoration: line-through;
+}
+  </style>

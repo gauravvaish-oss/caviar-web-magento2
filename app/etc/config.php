@@ -354,11 +354,9 @@ return [
         'PayPal_Braintree' => 1,
         'PayPal_BraintreeGraphQl' => 1,
         'Snowdog_Menu' => 1,
-        'Swissup_Core' => 0,
-        'Swissup_Swiper' => 0,
-        'Swissup_Testimonials' => 0,
         'Temando_ShippingRemover' => 1,
         'Vendor_CustomMinicart' => 1,
-        'Vendor_Dblocks' => 1
+        'Vendor_Dblocks' => 1,
+        'Vendor_TopProducts' => 1
     ]
 ];

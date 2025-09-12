@@ -5,14 +5,14 @@ return [
     ],
     'cache' => [
         'graphql' => [
-            'id_salt' => '0IQlFbYrrX6Pl3QXo17ho99sezpYhIGF'
+            'id_salt' => 'noADcR6u8XtRStySih5VyyA07TWU4Wjd'
         ],
         'frontend' => [
             'default' => [
-                'id_prefix' => 'f73_'
+                'id_prefix' => '841_'
             ],
             'page_cache' => [
-                'id_prefix' => 'f73_'
+                'id_prefix' => '841_'
             ]
         ],
         'allow_parallel_generation' => false
@@ -24,14 +24,14 @@ return [
         'consumers_wait_for_messages' => 1
     ],
     'crypt' => [
-        'key' => 'b1069ad04185af3ef1d1d3cbfbaa94ef'
+        'key' => '8fd4449153f1f75aa1ed29dcf6607476'
     ],
     'db' => [
         'table_prefix' => '',
         'connection' => [
             'default' => [
                 'host' => 'localhost',
-                'dbname' => 'mage2',
+                'dbname' => 'caviar',
                 'username' => 'root',
                 'password' => 'admin@123',
                 'model' => 'mysql4',
@@ -62,8 +62,8 @@ return [
     ],
     'cache_types' => [
         'config' => 1,
-        'layout' => 0,
-        'block_html' => 0,
+        'layout' => 1,
+        'block_html' => 1,
         'collections' => 1,
         'reflection' => 1,
         'db_ddl' => 1,
@@ -72,16 +72,16 @@ return [
         'customer_notification' => 1,
         'config_integration' => 1,
         'config_integration_api' => 1,
-        'full_page' => 0,
+        'full_page' => 1,
         'config_webservice' => 1,
         'translate' => 1,
         'goomento_pagebuilder_frontend' => 1,
         'goomento_pagebuilder_backend' => 1
     ],
     'downloadable_domains' => [
-        'devmage.local.com'
+        'vixo.local.com'
     ],
     'install' => [
-        'date' => 'Fri, 29 Aug 2025 05:01:43 +0000'
+        'date' => 'Fri, 12 Sep 2025 07:54:31 +0000'
     ]
 ];

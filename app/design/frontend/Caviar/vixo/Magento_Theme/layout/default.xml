@@ -63,12 +63,12 @@
                 </container>
             </container>
             <container name="header-wrapper" label="Page Header" as="header-wrapper" htmlTag="div" htmlClass="header content">
-                <block class="Magento\Theme\Block\Html\Header\Logo" name="logo">
+                <!-- <block class="Magento\Theme\Block\Html\Header\Logo" name="logo">
                     <arguments>
                         <argument name="logoPathResolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoPathResolver</argument>
                         <argument name="logo_size_resolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolver</argument>
                     </arguments>
-                </block>
+                </block> -->
                 <block class="Magento\Cms\Block\Block" name="main.menu">
                     <arguments>
                         <argument name="block_id" xsi:type="string">main-menu</argument>

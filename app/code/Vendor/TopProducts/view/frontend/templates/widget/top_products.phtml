@@ -1,0 +1,72 @@
+<?php
+/** @var $block \Vendor\TopProducts\Block\Widget\TopProducts */
+$categoryIds = $block->getCategoryIds();
+$title = $block->getData('title') ?: __('Top Products');
+?>
+<div class="main-title">
+    <div class="d-flex align-items-center justify-content-between">
+        <h2><?= $block->escapeHtml($title) ?></h2>
+        <div class="d-flex justify-content-end">
+            <div class="top_product-prev swiper-button-prev"></div>
+            <div class="top_product-next swiper-button-next"></div>
+        </div>
+    </div>
+
+    <div class="swiper top_product_slider" style="overflow: hidden;">
+        <div class="swiper-wrapper">
+            <?php foreach ($categoryIds as $categoryId): ?>
+                <?php
+                $category = $block->getCategory($categoryId);
+                if (!$category) continue;
+                $products = $block->getProductsByCategory($categoryId);
+                $imageUrl = $block->getCategoryImage($category);
+                ?>
+                <div class="swiper-slide">
+                    <div class="top_product_card">
+                        <div class="top_product_image">
+                            <img src="<?= $imageUrl ?>" alt="<?= $block->escapeHtml($category->getName()) ?>" class="img-fluid"/>
+                        </div>
+                        <div class="top_product_content">
+                            <h5><?= $block->escapeHtml($category->getName()) ?></h5>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span><?= $products->getSize() ?> ( <?= __('Items') ?> )</span>
+                                <a href="<?= $block->getUrl('catalog/category/view', ['id' => $categoryId]) ?>" class="arrow-link">
+                                    <img src="<?= $block->getViewFileUrl('Vendor_TopProducts::images/arrow.png') ?>" alt="arrow" class="img-fluid"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+require(['jquery', 'swiper'], function ($, Swiper) {
+    'use strict';
+    $(function () {
+        var SwiperClass = Swiper && Swiper.default ? Swiper.default : Swiper;
+
+        $('.main-title').each(function () { // handle multiple widgets
+            var $container = $(this);
+            var sliderEl = $container.find('.top_product_slider')[0];
+            if (!sliderEl) return;
+
+            new SwiperClass(sliderEl, {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: $container.find('.top_product-next'),
+                    prevEl: $container.find('.top_product-prev')
+                },
+                breakpoints: {
+                    1024: { slidesPerView: 3 },
+                    768: { slidesPerView: 2 },
+                    480: { slidesPerView: 1 }
+                }
+            });
+        });
+    });
+});
+
+</script>

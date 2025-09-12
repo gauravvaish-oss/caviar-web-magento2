@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="top_products_widget" class="Vendor\TopProducts\Block\Widget\TopProducts" placeholder_image="">
+        <label translate="true">Top Products Widget</label>
+        <description translate="true">Displays selected categories as a swiper slider</description>
+        <parameters>
+            <parameter name="title" xsi:type="text" sort_order="10" />
+            <parameter name="category_ids" xsi:type="text" sort_order="20" />
+            <parameter name="items_count" xsi:type="text" sort_order="30"/>
+        </parameters>
+    </widget>
+</widgets>
