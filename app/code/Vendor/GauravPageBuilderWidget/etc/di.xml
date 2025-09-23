@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Plugin to inject custom widget into Goomento PageBuilder -->
+    <type name="Goomento\PageBuilder\EntryPoint">
+        <plugin name="vendor_gaurav_register_widget"
+                type="Vendor\GauravPageBuilderWidget\Plugin\EntryPointPlugin"/>
+    </type>
+
+</config>

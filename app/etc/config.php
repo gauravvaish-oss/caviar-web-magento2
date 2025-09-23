@@ -357,6 +357,7 @@ return [
         'Temando_ShippingRemover' => 1,
         'Vendor_CustomMinicart' => 1,
         'Vendor_Dblocks' => 1,
+        'Vendor_GauravPageBuilderWidget' => 1,
         'Vendor_TopProducts' => 1
     ]
 ];

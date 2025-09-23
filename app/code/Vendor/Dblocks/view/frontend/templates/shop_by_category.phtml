@@ -1,0 +1,73 @@
+<?php /** @var $block \Vendor\Dblocks\Block\CategorySlider */ ?>
+<div class="main-title">
+    <div class="d-flex align-items-center justify-content-between">
+        <h2><?= __('Shop by Category') ?></h2>
+        <div class="d-flex justify-content-end">
+            <div class="shop-prev swiper-button-prev"></div>
+            <div class="shop-next swiper-button-next"></div>
+        </div>
+    </div>
+
+    <div class="swiper shop_by_category">
+        <div class="swiper-wrapper">
+            <?php foreach ($block->getCategories() as $_category): ?>
+                <div class="swiper-slide">
+                    <div class="category_section_bg">
+                        <?php if ($_category->getImageUrl()): ?>
+                            <img src="<?= $_category->getImageUrl(); ?>"
+                                 alt="<?= $block->escapeHtml($_category->getName()) ?>"
+                                 class="img-fluid"/>
+                        <?php endif; ?>
+
+                        <ul>
+                            <?php foreach ($block->getSubCategories($_category) as $_subcat): ?>
+                                <li>
+                                    <h6>
+                                        <a href="<?= $_subcat->getUrl(); ?>">
+                                            <?= $block->escapeHtml($_subcat->getName()) ?>
+                                        </a>
+                                    </h6>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+
+                        <div class="text-center mb-lg-4 mb-3">
+                            <a href="<?= $_category->getUrl() ?>"><?= __('Shop Now') ?></a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+<script>
+require(['jquery', 'swiper'], function ($, Swiper) {
+    'use strict';
+    $(function () {
+        var SwiperClass = Swiper && Swiper.default ? Swiper.default : Swiper;
+
+        $('.main-title').each(function () {
+            var $container = $(this);
+            var sliderEl = $container.find('.shop_by_category')[0];
+            if (!sliderEl) return;
+
+            new SwiperClass(sliderEl, {
+                slidesPerView: 3,
+                spaceBetween: 15,
+                loop: true,
+                navigation: {
+                    nextEl: $container.find('.shop-next'),
+                    prevEl: $container.find('.shop-prev')
+                },
+                breakpoints: {
+                    1024: { slidesPerView: 6 },
+                    768: { slidesPerView: 4 },
+                    480: { slidesPerView: 2 }
+                }
+            });
+        });
+    });
+});
+
+</script>

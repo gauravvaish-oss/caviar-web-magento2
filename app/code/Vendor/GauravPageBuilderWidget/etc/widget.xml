@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/widget_file.xsd">
+
+    <widget id="product_countdown_widget"
+            class="Vendor\GauravPageBuilderWidget\Block\Widgets\Product\ProductCountdown">
+        <label translate="true">Product Countdown Widget</label>
+        <description translate="true">Display a product countdown with title, SKU, and date.</description>
+
+        <parameters>
+            <parameter name="product-countdown_title"
+                       xsi:type="text"
+                       sort_order="10"
+                       visible="true">
+                <label translate="true">Title</label>
+                <description translate="true">Enter widget title</description>
+            </parameter>
+
+            <parameter name="product-countdown_product"
+                       xsi:type="text"
+                       sort_order="20"
+                       visible="true">
+                <label translate="true">Product SKU</label>
+                <description translate="true">Enter product SKU</description>
+            </parameter>
+
+            <parameter name="product-countdown_date"
+                       xsi:type="text"
+                       sort_order="30"
+                       visible="true">
+                <label translate="true">Countdown Date</label>
+                <description translate="true">Enter countdown date (YYYY-MM-DD HH:MM:SS)</description>
+            </parameter>
+        </parameters>
+    </widget>
+    <widget id="vendor_banner_widget" class="Vendor\GauravPageBuilderWidget\Builder\Widgets\CustomBanner">
+        <label translate="true">Custom Banner Section</label>
+        <description translate="true">A full-width banner with background image, title, subtitle, description, button</description>
+        <parameters>
+            <parameter name="background_image" xsi:type="text" sort_order="10" visible="true">
+                <label translate="true">Background Image</label>
+            </parameter>
+            <parameter name="subtitle" xsi:type="text" sort_order="20" visible="true">
+                <label translate="true">Subtitle</label>
+            </parameter>
+            <parameter name="title" xsi:type="text" sort_order="30" visible="true">
+                <label translate="true">Title</label>
+            </parameter>
+            <parameter name="description" xsi:type="text" sort_order="40" visible="true">
+                <label translate="true">Description</label>
+            </parameter>
+            <parameter name="button_text" xsi:type="text" sort_order="50" visible="true">
+                <label translate="true">Button Text</label>
+                <value>SHOP NOW</value>
+            </parameter>
+            <parameter name="button_link" xsi:type="text" sort_order="60" visible="true">
+                <label translate="true">Button Link</label>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

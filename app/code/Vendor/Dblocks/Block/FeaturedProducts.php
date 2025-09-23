@@ -23,7 +23,7 @@ class FeaturedProducts extends Template
 
     public function getFeaturedProducts()
     {
-        $limit = $this->getData('limit') ?: 2; // default 5
+        $limit = $this->getData('limit') ?: 3; // default 5
 
         $collection = $this->productCollectionFactory->create();
         $collection->addAttributeToSelect(['name', 'price', 'small_image'])

@@ -31,7 +31,7 @@ class LatestProducts extends Template
 
     public function getLatestProducts()
     {
-        $limit = $this->getData('limit') ?: 2; // default limit
+        $limit = $this->getData('limit') ?: 3; // default limit
         $categoryId = $this->getData('category_id'); // optional param
 
         $collection = $this->productCollectionFactory->create();
