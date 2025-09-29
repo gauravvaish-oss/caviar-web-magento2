@@ -16,6 +16,18 @@ class EntryPointPlugin
     public function beforeRegisterWidgets($subject, Widgets $widgetsManager)
     {
         $this->logger->info('Registering GauravWidget');
+         $widgetsManager->registerWidgetType(
+            \Vendor\GauravPageBuilderWidget\Builder\Widgets\MultiLevelMenu::class
+        );
+        $widgetsManager->registerWidgetType(
+            \Vendor\GauravPageBuilderWidget\Builder\Widgets\TopCategoryBar::class
+        );
+        $widgetsManager->registerWidgetType(
+            \Vendor\GauravPageBuilderWidget\Builder\Widgets\ShopByCategory::class
+        );
+        $widgetsManager->registerWidgetType(
+            \Vendor\GauravPageBuilderWidget\Builder\Widgets\CustomBanner::class
+        );
         $widgetsManager->registerWidgetType(
             \Vendor\GauravPageBuilderWidget\Builder\Widgets\CategoriesView::class
         );
@@ -26,8 +38,9 @@ class EntryPointPlugin
             \Vendor\GauravPageBuilderWidget\Builder\Widgets\ProductCountdown::class
         );
         $widgetsManager->registerWidgetType(
-            \Vendor\GauravPageBuilderWidget\Builder\Widgets\CategoryTabs::class
+            \Vendor\GauravPageBuilderWidget\Builder\Widgets\TrendingProducts::class
         );
+        
         
         return [$widgetsManager];
     }

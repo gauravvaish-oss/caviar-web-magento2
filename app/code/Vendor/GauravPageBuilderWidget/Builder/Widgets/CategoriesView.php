@@ -42,356 +42,202 @@ class CategoriesView extends AbstractWidget
             'type' => Controls::SELECT2,
             'multiple' => true,
             'options' => $options,
+            'description' => __("Please select at least 3 categories."),
+            'validation' => function ($value) {
+                if (!is_array($value) || count($value) < 3) {
+                    return __("You must select at least 3 categories.");
+                }
+                return true;
+            },
+        ]);
+        $this->addControl('array_png', [
+            'label' => __('Arrow Picture'),
+            'type'  => Controls::MEDIA,
         ]);
 
         $this->endControlsSection();
     }
 
-    protected function contentTemplate()
-    {
-        ?>
+protected function contentTemplate()
+{
+    ?>
+    <div class="main-title">
+        <div class="d-flex align-items-center justify-content-center justify-content-md-between">
+            <h2>{{{settings.title}}}</h2>
+            <div class="d-none d-md-flex justify-content-end">
+                <div class="top_product-prev swiper-button-prev" tabindex="0" role="button"></div>
+                <div class="top_product-next swiper-button-next" tabindex="0" role="button"></div>
+            </div>
+        </div>
+
+        <div class="swiper top_product_slider">
+            <div class="swiper-wrapper" id="category-slider-view"></div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+    </div>
+
+    <script>
+    require(['jquery', 'swiper'], function($, Swiper) {
+        $(document).ready(function () {
+            var categories = "{{{settings.category}}}";
+            var categoryArray = categories ? categories.split(",") : [];
+            var formKey = $('input[name="form_key"]').val();
+            var $sliderWrapper = $("#category-slider-view");
+            $sliderWrapper.html("");
+            var ajaxRequests = [];
+            categoryArray.forEach(function(categoryId, index) {
+                categoryId = categoryId.trim();
+                var request = $.ajax({
+                    url: '/customgoomento/category/categoriesview',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { category_id: categoryId, form_key: formKey },
+                    success: function(response) {
+                        if (response.success) {
+                            var html = `
+                                <div class="swiper-slide" role="group" aria-label="${index + 1} / ${categoryArray.length}">
+                                    <div class="top_product_section_bg">
+                                        <img src="${response.category_image}" alt="${response.category_name}" class="img-fluid">
+                                        <h5>${response.category_name}</h5>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <span>${response.product_count} ( Items )</span>
+                                            <a href="${response.category_url}">
+                                                <img src="{{{settings.array_png.url}}}" alt="Go to ${response.category_name}" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            $sliderWrapper.append(html);
+                        } else {
+                            console.error("Failed to load category:", categoryId);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error for category " + categoryId + ":", xhr.responseText);
+                    }
+                });
+
+                ajaxRequests.push(request);
+            });
+            $.when.apply($, ajaxRequests).done(function() {
+                new Swiper('.top_product_slider', {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                    navigation: {
+                        nextEl: '.top_product-next',
+                        prevEl: '.top_product-prev',
+                    },
+                    breakpoints: {
+                        768: { slidesPerView: 2 },
+                        480: { slidesPerView: 1 }
+                    }
+                });
+            });
+
+        });
+    });
+    </script>
+    <?php
+}
+
+  protected function render(): string
+{
+    $settings = $this->getSettings();
+    $categoryArray = isset($settings['category']) && is_array($settings['category'])
+        ? array_filter(array_map('trim', $settings['category']))
+        : [];
+    $title = $settings['title'] ?? '';
+    $arrowUrl = $settings['array_png']['url'] ?? ''; // fallback if not set
+
+    ob_start();
+    ?>
 <div class="main-title">
-    <div class="d-flex align-items-center justify-content-between">
-        <h2><?= $block->escapeHtml($title) ?></h2>
-        <!-- Navigation buttons -->
-        <div class="d-flex justify-content-end">
-            <div class="top_product-prev swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"></div>
-            <div class="top_product-next swiper-button-next" tabindex="0" role="button" aria-label="Next slide"></div>
+    <div class="d-flex align-items-center justify-content-center justify-content-md-between">
+        <h2><?= htmlspecialchars($title) ?></h2>
+        <div class="d-none d-md-flex justify-content-end">
+            <div class="top_product-prev swiper-button-prev" tabindex="0" role="button"></div>
+            <div class="top_product-next swiper-button-next" tabindex="0" role="button"></div>
         </div>
     </div>
 
-    <div class="swiper top_product_slider" style="overflow: hidden;">
-        <div class="swiper-wrapper">
-            
-        </div>
+    <div class="swiper top_product_slider">
+        <div class="swiper-wrapper" id="category-slider-view"></div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
     </div>
 </div>
 
-<script type="text/javascript">
-require([
-    "jquery",
-    "swiper"  // ensure swiper is mapped in requirejs-config.js
-], function ($, Swiper) {
-
+<script>
+require(['jquery', 'swiper'], function($, Swiper) {
     $(document).ready(function () {
-        var swiperInstance = null;
+        var categoryArray = <?= json_encode($categoryArray) ?>;
+        if (!categoryArray.length) return;
 
-        // 🔹 Function to init Swiper
-        function initSwiper() {
-            if (swiperInstance) {
-                swiperInstance.destroy(true, true); // clean old instance
-            }
-            swiperInstance = new Swiper(".productSwiper", {
-                slidesPerView: 2,
-                spaceBetween: 20,
-                navigation: {
-                    nextEl: ".custom-next",
-                    prevEl: ".custom-prev",
-                },
-                loop: true,
-                observer: true,
-                observeParents: true,
-                 breakpoints: {
-                    0: {           // 📱 mobile
-                        slidesPerView: 1,
-                        spaceBetween: 10
-                    },
-                    768: {         // 📱 tablet
-                        slidesPerView: 2,
-                        spaceBetween: 15
-                    },
-                    1024: {        // 💻 desktop
-                        slidesPerView: 2,
-                        spaceBetween: 20
-                    }
-                }
-            });
-        }
+        var formKey = $('input[name="form_key"]').val();
+        var $sliderWrapper = $("#category-slider-view");
+        $sliderWrapper.empty();
 
-        // 🔹 Function to load products for a category
-        function loadProducts(btn, categoryId) {
-            $.ajax({
-                url: "/customgoomento/category/categoriesview",
-                type: "GET",
-                dataType: "json",
-                data: { category_id: categoryId },
-                beforeSend: function () {
-                    $("#product-category-swiper").html("<p>Loading...</p>");
-                },
-                success: function (response) {
+        var ajaxRequests = categoryArray.map(function(categoryId, index) {
+            return $.ajax({
+                url: '/customgoomento/category/categoriesview',
+                type: 'POST',
+                dataType: 'json',
+                data: { category_id: categoryId, form_key: formKey },
+                success: function(response) {
                     if (response.success) {
-                        btn.text(response.category_name);
+                        var categoryImage = response.category_image || '<?= $arrowUrl ?>';
+                        var categoryName = response.category_name || 'Unnamed';
+                        var productCount = response.product_count || 0;
+                        var categoryUrl = response.category_url || '#';
 
-                        var html = "";
-                        $.each(response.products, function (i, product) {
-                            html += `
-                                <div class="swiper-slide">
-                                    <div class="product-card">
-                                        <div class="product-image">
-                                            <img class="product-img" src="${product.image}" alt="${product.name}">
-                                            <span class="discount-badge">New</span>
-                                            <div class="product-actions">
-                                                <button class="action-btn" title="Quick View"><img src="./images/eye.png" alt=""></button>
-                                                <button class="action-btn" title="Add to Wishlist"><img src="./images/heart.png" alt=""></button>
-                                                <button class="action-btn" title="Compare"><img src="./images/shuffle.png" alt=""></button>
-                                                <button class="action-btn" title="Add to Cart"><img src="./images/cart.png" alt=""></button>
-                                            </div>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="product-rating">
-                                                <div class="stars">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <p class="star-qty">(3)</p>
-                                                </div>
-                                            </div>
-                                            <h5 class="product-title"><a href="${product.url}">${product.name}</a></h5>
-                                            <div class="product-price">
-                                                <span class="current-price">₹ ${product.price}</span>
-                                                <span class="original-price">₹350</span>
-                                            </div>
-                                        </div>
+                        var html = `
+                            <div class="swiper-slide" role="group" aria-label="${index + 1} / ${categoryArray.length}">
+                                <div class="top_product_section_bg">
+                                    <img src="${categoryImage}" alt="${categoryName}" class="img-fluid">
+                                    <h5>${categoryName}</h5>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span>${productCount} ( Items )</span>
+                                        <a href="${categoryUrl}">
+                                            <img src="<?= $arrowUrl ?>" alt="Go to ${categoryName}" class="img-fluid">
+                                        </a>
                                     </div>
                                 </div>
-                            `;
-                        });
-
-                        $("#product-category-swiper").html(html);
-
-                        // ✅ Init Swiper after products loaded
-                        initSwiper();
+                            </div>
+                        `;
+                        $sliderWrapper.append(html);
                     } else {
-                        $("#product-category-swiper").html("<p>Error: " + response.message + "</p>");
+                        console.warn("Failed to load category:", categoryId);
                     }
                 },
-                error: function () {
-                    $("#product-category-swiper").html("<p>Request failed!</p>");
+                error: function(xhr) {
+                    console.error("AJAX error for category " + categoryId + ":", xhr.responseText);
                 }
             });
-        }
-
-        // 🔹 Initial load for first tab
-        var firstBtn = $(".toggle_section .nav-link").first();
-        var firstCat = parseInt(firstBtn.attr("data-product-category"), 10);
-        if (Number.isInteger(firstCat)) {
-            loadProducts(firstBtn, firstCat);
-        }
-
-        // 🔹 On button click → load its products
-        $(document).on("click", ".toggle_section .nav-link", function () {
-            var btn = $(this);
-            var num = parseInt(btn.attr("data-product-category"), 10);
-
-            if (Number.isInteger(num)) {
-                $(".toggle_section .nav-link").removeClass("active");
-                btn.addClass("active");
-                loadProducts(btn, num);
-            }
         });
 
+        // Initialize Swiper after all AJAX calls complete
+        $.when.apply($, ajaxRequests).done(function() {
+            if ($sliderWrapper.children().length) {
+                new Swiper('.top_product_slider', {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                    loop: true,
+                    navigation: {
+                        nextEl: '.top_product-next',
+                        prevEl: '.top_product-prev',
+                    },
+                    breakpoints: {
+                        768: { slidesPerView: 1 },
+                        480: { slidesPerView: 1 }
+                    }
+                });
+            }
+        });
     });
 });
 </script>
-<?php
-    }
+    <?php
+    return ob_get_clean();
+}
 
-    protected function render(): string
-    {
-        $settings = $this->getSettingsForDisplay();
-
-        $title = $settings['title'] ?? '';
-        $cat1   = $settings['category_1'] ?? '';
-        $cat2   = $settings['category_2'] ?? '';
-        $cat3   = $settings['category_3'] ?? '';
-        $cat4   = $settings['category_4'] ?? '';
-        $cat5   = $settings['category_5'] ?? '';
-
-        // Fetch category labels
-        $categorySource = ObjectManagerHelper::get(\Goomento\PageBuilder\Model\Config\Source\CatalogCategory::class);
-        $categories = array_column($categorySource->toOptionArray(), 'label', 'value');
-
-        $cat1Label = $categories[$cat1] ?? '';
-        $cat2Label = $categories[$cat2] ?? '';
-        $cat3Label = $categories[$cat3] ?? '';
-        $cat4Label = $categories[$cat4] ?? '';
-        $cat5Label = $categories[$cat5] ?? '';
-
-        ob_start();
-        ?>
-
-<div class="col-md-12 Product_category">
-    <div class="row">
-        <div class="main-title ">
-            <h2><?= $title ?></h2>
-            <!-- Swiper Navigation -->
-            <div class="swiper-nav">
-                <div class="swiper-button-prev custom-prev" tabindex="0" role="button"></div>
-                <div class="swiper-button-next custom-next" tabindex="0" role="button"></div>
-            </div>
-        </div>
-
-        <!-- Category Buttons -->
-        <div class="col-md-3 remove_padding">
-            <div class="category_menu product_category">
-                <div class="nav flex-column nav-pills toggle_section" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" data-product-category="<?= $cat1 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat1Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat2 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat2Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat3 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat3Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat4 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat4Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat5 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat5Label) ?></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Products Swiper -->
-        <div class="col-md-9">
-            <div class="tab-content">
-                <div class="tab-pane fade active show">
-                    <div class="swiper productSwiper">
-                        <div class="swiper-wrapper" id="product-category-swiper"></div>
-                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script type="text/javascript">
-require([
-    "jquery",
-    "swiper"  // ensure swiper is mapped in requirejs-config.js
-], function ($, Swiper) {
-
-    $(document).ready(function () {
-        var swiperInstance = null;
-
-        // 🔹 Function to init Swiper
-        function initSwiper() {
-            if (swiperInstance) {
-                swiperInstance.destroy(true, true); // clean old instance
-            }
-            swiperInstance = new Swiper(".productSwiper", {
-                slidesPerView: 2,
-                spaceBetween: 20,
-                navigation: {
-                    nextEl: ".custom-next",
-                    prevEl: ".custom-prev",
-                },
-                loop: true,
-                observer: true,
-                observeParents: true,
-                 breakpoints: {
-                    0: {           // 📱 mobile
-                        slidesPerView: 1,
-                        spaceBetween: 10
-                    },
-                    768: {         // 📱 tablet
-                        slidesPerView: 2,
-                        spaceBetween: 15
-                    },
-                    1024: {        // 💻 desktop
-                        slidesPerView: 2,
-                        spaceBetween: 20
-                    }
-                }
-            });
-        }
-
-        // 🔹 Function to load products for a category
-        function loadProducts(btn, categoryId) {
-            $.ajax({
-                url: "/customgoomento/category/getproducts",
-                type: "GET",
-                dataType: "json",
-                data: { category_id: categoryId },
-                beforeSend: function () {
-                    $("#product-category-swiper").html("<p>Loading...</p>");
-                },
-                success: function (response) {
-                    if (response.success) {
-                        btn.text(response.category_name);
-
-                        var html = "";
-                        $.each(response.products, function (i, product) {
-                            html += `
-                                <div class="swiper-slide">
-                                    <div class="product-card">
-                                        <div class="product-image">
-                                            <img class="product-img" src="${product.image}" alt="${product.name}">
-                                            <span class="discount-badge">New</span>
-                                            <div class="product-actions">
-                                                <button class="action-btn" title="Quick View"><img src="./images/eye.png" alt=""></button>
-                                                <button class="action-btn" title="Add to Wishlist"><img src="./images/heart.png" alt=""></button>
-                                                <button class="action-btn" title="Compare"><img src="./images/shuffle.png" alt=""></button>
-                                                <button class="action-btn" title="Add to Cart"><img src="./images/cart.png" alt=""></button>
-                                            </div>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="product-rating">
-                                                <div class="stars">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                    <p class="star-qty">(3)</p>
-                                                </div>
-                                            </div>
-                                            <h5 class="product-title"><a href="${product.url}">${product.name}</a></h5>
-                                            <div class="product-price">
-                                                <span class="current-price">₹ ${product.price}</span>
-                                                <span class="original-price">₹350</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        });
-
-                        $("#product-category-swiper").html(html);
-
-                        // ✅ Init Swiper after products loaded
-                        initSwiper();
-                    } else {
-                        $("#product-category-swiper").html("<p>Error: " + response.message + "</p>");
-                    }
-                },
-                error: function () {
-                    $("#product-category-swiper").html("<p>Request failed!</p>");
-                }
-            });
-        }
-
-        // 🔹 Initial load for first tab
-        var firstBtn = $(".toggle_section .nav-link").first();
-        var firstCat = parseInt(firstBtn.attr("data-product-category"), 10);
-        if (Number.isInteger(firstCat)) {
-            loadProducts(firstBtn, firstCat);
-        }
-
-        // 🔹 On button click → load its products
-        $(document).on("click", ".toggle_section .nav-link", function () {
-            var btn = $(this);
-            var num = parseInt(btn.attr("data-product-category"), 10);
-
-            if (Number.isInteger(num)) {
-                $(".toggle_section .nav-link").removeClass("active");
-                btn.addClass("active");
-                loadProducts(btn, num);
-            }
-        });
-
-    });
-});
-</script>
-
-        <?php
-            return ob_get_clean();
-
-    }
 }

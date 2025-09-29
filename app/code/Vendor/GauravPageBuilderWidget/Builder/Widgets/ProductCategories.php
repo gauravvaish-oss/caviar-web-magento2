@@ -43,6 +43,11 @@ class ProductCategories extends AbstractWidget
                 'type' => Controls::SELECT,
                 'options' => $options,
             ]);
+             $this->addControl("category_svg_{$i}", [
+                'label' => __("Category SVG {$i}"),
+                'type'  => Controls::MEDIA,
+            ]);
+
         }
 
         $this->endControlsSection();
@@ -65,12 +70,14 @@ class ProductCategories extends AbstractWidget
         <!-- Category Buttons -->
         <div class="col-md-3 remove_padding">
             <div class="category_menu product_category">
-                <div class="nav flex-column nav-pills toggle_section" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" data-product-category="{{{settings.category_1}}}">{{{settings.category_1}}}</button>
-                    <button class="nav-link" data-product-category="{{{settings.category_2}}}">{{{settings.category_2}}}</button>
-                    <button class="nav-link" data-product-category="{{{settings.category_3}}}">{{{settings.category_3}}}</button>
-                    <button class="nav-link" data-product-category="{{{settings.category_4}}}">{{{settings.category_4}}}</button>
-                    <button class="nav-link" data-product-category="{{{settings.category_5}}}">{{{settings.category_5}}}</button>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="toggle_section">
+                        <button class="nav-link active" id="v-pills-one_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-one_product" type="button" role="tab" aria-controls="v-pills-one_product" aria-selected="true" data-product-category="{{{settings.category_1}}}"><img src="{{{settings.category_svg_1.url}}}" alt="">{{{settings.category_1}}}</button>
+                        <button class="nav-link" id="v-pills-two_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-two_product" type="button" role="tab" aria-controls="v-pills-two_product" aria-selected="false" tabindex="-1" data-product-category="{{{settings.category_2}}}"><img src="{{{settings.category_svg_2.url}}}" alt="">{{{settings.category_2}}}</button>
+                        <button class="nav-link" id="v-pills-three_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-three_product" type="button" role="tab" aria-controls="v-pills-three_product" aria-selected="false" tabindex="-1" data-product-category="{{{settings.category_3}}}"><img src="{{{settings.category_svg_3.url}}}" alt="">{{{settings.category_3}}}</button>
+                        <button class="nav-link" id="v-pills-four_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-four_product" type="button" role="tab" aria-controls="v-pills-four_product" aria-selected="false" tabindex="-1" data-product-category="{{{settings.category_4}}}"><img src="{{{settings.category_svg_4.url}}}" alt="">{{{settings.category_4}}}</button>
+                        <button class="nav-link" id="v-pills-five_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-five_product" type="button" role="tab" aria-controls="v-pills-five_product" aria-selected="false" tabindex="-1" data-product-category="{{{settings.category_5}}}"><img src="{{{settings.category_svg_5.url}}}" alt="">{{{settings.category_5}}}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -256,20 +263,22 @@ require([
         </div>
 
         <!-- Category Buttons -->
-        <div class="col-md-3 remove_padding">
+        <div class="col-md-4 remove_padding">
             <div class="category_menu product_category">
-                <div class="nav flex-column nav-pills toggle_section" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" data-product-category="<?= $cat1 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat1Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat2 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat2Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat3 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat3Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat4 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat4Label) ?></button>
-                    <button class="nav-link" data-product-category="<?= $cat5 ?>"><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat5Label) ?></button>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="toggle_section">
+                        <button class="nav-link active" id="v-pills-one_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-one_product" type="button" role="tab" aria-controls="v-pills-one_product" aria-selected="true" data-product-category="<?= $cat1 ?>"><img src="<?php echo $settings['category_svg_1']['url']; ?>" alt=""><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat1Label) ?></button>
+                        <button class="nav-link" id="v-pills-two_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-two_product" type="button" role="tab" aria-controls="v-pills-two_product" aria-selected="false" tabindex="-1" data-product-category="<?= $cat2 ?>"><img src="<?php echo $settings['category_svg_2']['url']; ?>" alt=""><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat2Label) ?></button>
+                        <button class="nav-link" id="v-pills-three_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-three_product" type="button" role="tab" aria-controls="v-pills-three_product" aria-selected="false" tabindex="-1" data-product-category="<?= $cat3 ?>"><img src="<?php echo $settings['category_svg_3']['url']; ?>" alt=""><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat3Label) ?></button>
+                        <button class="nav-link" id="v-pills-four_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-four_product" type="button" role="tab" aria-controls="v-pills-four_product" aria-selected="false" tabindex="-1" data-product-category="<?= $cat4 ?>"><img src="<?php echo $settings['category_svg_4']['url']; ?>" alt=""><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat4Label) ?></button>
+                        <button class="nav-link" id="v-pills-five_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-five_product" type="button" role="tab" aria-controls="v-pills-five_product" aria-selected="false" tabindex="-1" data-product-category="<?= $cat5 ?>"><img src="<?php echo $settings['category_svg_5']['url']; ?>" alt=""><?= preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat5Label) ?></button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Products Swiper -->
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="tab-content">
                 <div class="tab-pane fade active show">
                     <div class="swiper productSwiper">
@@ -313,7 +322,7 @@ require([
                         spaceBetween: 10
                     },
                     768: {         // 📱 tablet
-                        slidesPerView: 2,
+                        slidesPerView: 1,
                         spaceBetween: 15
                     },
                     1024: {        // 💻 desktop
@@ -336,7 +345,7 @@ require([
                 },
                 success: function (response) {
                     if (response.success) {
-                        btn.text(response.category_name);
+                        // btn.text(response.category_name);
 
                         var html = "";
                         $.each(response.products, function (i, product) {
