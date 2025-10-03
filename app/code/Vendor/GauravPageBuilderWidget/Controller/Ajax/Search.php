@@ -24,14 +24,23 @@ class Search extends Action
     public function execute()
     {
         $query = $this->getRequest()->getParam('q');
+        $categoryId = $this->getRequest()->getParam('category');
+
         $collection = $this->productCollectionFactory->create()
             ->addAttributeToSelect(['name','url_key'])
             ->addAttributeToFilter('name',['like'=>'%'.$query.'%'])
-            ->setPageSize(5);
+            ->setPageSize(10);
+
+        if ($categoryId && $categoryId != 'all') {
+            $collection->addCategoriesFilter(['in' => $categoryId]);
+        }
 
         $result = [];
         foreach($collection as $product){
-            $result[] = ['name'=>$product->getName(), 'url'=>$product->getProductUrl()];
+            $result[] = [
+                'name' => $product->getName(),
+                'url'  => $product->getProductUrl()
+            ];
         }
 
         return $this->jsonFactory->create()->setData($result);

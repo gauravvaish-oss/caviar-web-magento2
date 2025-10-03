@@ -180,7 +180,7 @@ class TopCategoryBar extends AbstractWidget
                         </button>
                         <div class="nav_below_item nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <div id="toggle_section" style="display: block;">
-                                
+                                {{{settings.menu_items}}}
                             </div>
                         </div>
                     </div>
@@ -205,11 +205,134 @@ class TopCategoryBar extends AbstractWidget
     require(['jquery'], function($) {
         $(document).ready(function() {
             var menu = '{{{settings.menu_items}}}';
-            console.log('Menu Data:', menu); // Debugging line
+            console.log('Menu Data:', JSON.stringify(menu)); // Debugging line
         });
     });
     </script>
     <?php
 }
 
+    protected function render(): string
+    {
+         $settings = $this->getSettings();
+         $categorySource = ObjectManagerHelper::get(\Goomento\PageBuilder\Model\Config\Source\CatalogCategory::class);
+        $categories = $categorySource->toOptionArray();
+        // dd($categories);die;
+
+        $options = [];
+        $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+        foreach ($categories as $cat) {
+            if(in_array($cat['value'], $settings['category'])){
+                $options[$cat['value']] = preg_replace('/\s*\(ID:\s*\d+\)/', '', $cat['label']);
+            }
+        }
+
+        //  dd($options);die;
+         $menu_items = $settings['menu_items'];
+         ob_start();
+         ?>
+         <div class="top-category-bar ">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Left Side: Toggle + Title -->
+      <div class="col-md-3 d-flex align-items-center p-md-0">
+        <div class="category_menu">
+          <button onclick="toggleMyDiv()" class="top_category"><img src="images/toggle.png" alt=""> Top
+            Category</button>
+          <div class="nav_below_item nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div id="toggle_section">
+                <?php foreach($menu_items as $menu){ ?>
+              <button class="nav-link active" id="v-pills-new_product-tab" data-bs-toggle="pill" data-bs-target="#v-pills-new_product" type="button" role="tab" aria-controls="v-pills-new_product" aria-selected="true"><img src="images/tv_icon.png" alt=""><?php echo $menu['title']; ?></button>
+            <?php } ?> 
+            </div>
+          </div>
+        </div>
+</div>
+        <!-- Right Side: Search Bar -->
+        <div class="col-md-9">
+          <form class="d-flex search-form">
+            <input type="text" class="form-control search-input" placeholder="Search For Products">
+            <ul class="search-suggestions" style="position: absolute; top: 100%; left: 0; right: 0; z-index: 999; background: #fff; border: 1px solid #ccc; list-style: none; margin: 0; padding: 0; display: none;"></ul>
+            <select class="form-select category-select">
+              <option>All Categories</option>
+              <?php
+              foreach($options as $key => $value){?>
+              <option value="<?php echo $key ?>"><?php echo $value ?></option>
+             <?php } ?>
+              
+            </select>
+            
+            <button class="btn search-btn" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+ <script>
+    require(['jquery'], function($){
+        $(document).ready(function(){
+            var $input = $('.search-input');
+            var $category = $('.category-select');
+            var $suggestions = $('.search-suggestions');
+            var $toggleSection = $('#toggle_section');
+
+            $input.on('keyup', function(){
+                var query = $(this).val();
+                var category = $category.val();
+
+                if(query.length < 3){
+                    $suggestions.hide().empty();
+                    return;
+                }
+
+                $.ajax({
+                    url: "/customgoomento/ajax/search",
+                    type: 'GET',
+                    data: { q: query, category: category },
+                    success: function(data){
+                        $suggestions.empty();
+                        if(data.length){
+                            data.forEach(function(product){
+                                $suggestions.append('<li style="padding:5px 10px; cursor:pointer;"><a href="'+product.url+'">'+product.name+'</a></li>');
+                            });
+                            $suggestions.show();
+                        } else {
+                            $suggestions.append('<li style="padding:5px 10px;">No products found</li>').show();
+                        }
+                    }
+                });
+            });
+
+            // Optional: hide suggestions on click outside
+            $(document).on('click', function(e){
+                if(!$(e.target).closest('.search-wrapper').length){
+                    $suggestions.hide();
+                }
+            });
+
+                $('.top_category').hover(
+                    function() {
+                        $toggleSection.stop(true, true).slideDown(200);
+                    },
+                    function() {
+                        $toggleSection.stop(true, true).slideUp(200);
+                    }
+                );
+
+                // Optional: keep toggle visible when hovering over toggle_section itself
+                $toggleSection.hover(
+                    function(){ $(this).stop(true,true).show(); },
+                    function(){ $(this).stop(true,true).slideUp(200); }
+                );
+        });
+    });
+</script>
+
+
+         <?php
+         return ob_get_clean();
+    }
 }
